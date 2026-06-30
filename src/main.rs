@@ -1,21 +1,28 @@
 use bevy::prelude::*;
 
-mod player;
-
-use crate::player::PlayerPlugin;
+#[derive(Component)]
+struct Player;
 
 fn main() {
     App::new()
-        .insert_resource(ClearColor(Color::WHITE))
-        .add_plugins(DefaultPlugins.set(AssetPlugin {
-            file_path: "src/assets".into(),
-            ..default()
-        }))
+        .add_plugins(DefaultPlugins)
         .add_systems(Startup, setup)
-        .add_plugins(PlayerPlugin) // Update this line
         .run();
 }
 
 fn setup(mut commands: Commands) {
     commands.spawn(Camera2d);
+
+    // ...
+    commands.spawn((
+        Text2d::new("@"),
+        TextFont {
+            font_size: FontSize::Px(12.0),
+            font: default(),
+            ..default()
+        },
+        TextColor(Color::WHITE),
+        Transform::from_translation(Vec3::ZERO),
+        Player,
+    ));
 }
